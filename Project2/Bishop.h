@@ -7,13 +7,8 @@ class Bishop :
 {
 public:
     //Конструктор
-    Bishop(Field* field)
-    {
-        FigureType = FigureTypes::bishop;
-        _field = field;
-    }
+    Bishop(Field* field);
 
-    
     void AllMoves(int i, int j);
    
 };

@@ -7,16 +7,9 @@ class Queen :
 {
 public:
     //Конструктор
-    Queen(Field* field)
-    {
-        FigureType = FigureTypes::queen;
-        _field = field;
-    }
+    Queen(Field* field);
 
-    //
-    void AllMoves(int i, int j)
-    {
-
-    }
+    
+    void AllMoves(int i, int j);
 };
 
