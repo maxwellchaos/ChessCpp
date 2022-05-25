@@ -118,20 +118,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bishop.cpp" />
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="Pawn.cpp" />
+    <ClCompile Include="Rock.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bishop.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Figure.h" />
+    <ClInclude Include="King.h" />
+    <ClInclude Include="Knight.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Pawn.h" />
+    <ClInclude Include="Queen.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Rock.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
       <DependentUpon>MyForm.h</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Project2.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Img\белая ладья.png" />
+    <Image Include="Img\белая пешка.png" />
+    <Image Include="Img\белый конь.png" />
+    <Image Include="Img\белый король.png" />
+    <Image Include="Img\белый слон.png" />
+    <Image Include="Img\белый ферзь.png" />
+    <Image Include="Img\черная ладья.png" />
+    <Image Include="Img\черная пешка.png" />
+    <Image Include="Img\черный конь.png" />
+    <Image Include="Img\черный король.png" />
+    <Image Include="Img\черный слон.png" />
+    <Image Include="Img\черный ферзь.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,4 +1,11 @@
 #pragma once
+#include "Figure.h"
+#include "Pawn.h"
+#include "Rock.h"
+#include "Queen.h"
+#include "King.h"
+#include "Knight.h"
+#include "Bishop.h"
 
 //Класс игровое поле
 class Field
@@ -19,34 +26,23 @@ public:
 	//Выбранная фигура
 	Figure* SelectedFigure = 0;
 
+	int CurrentMove = FigureColors::white;
 
-	Field()
-	{
-		//Очистка поля
-		for(int i = 0;i<8;i++)
-		{ 
-			for (int j = 0; j < 8; j++)
-			{
-				Figures[i][j] = 0;
-			}
-		}
-		//расстановка фигур
-		//пешки
-		//черные
-		for (int j = 0; j < 8; j++)
-		{
-			Figure *figure = new Pawn(this);
-			figure->FigureColor = FigureColors::black;
-			Figures[1][j] = figure;
-		}
-		//Белые
-		for (int j = 0; j < 8; j++)
-		{
-			Figure* figure = new Pawn(this);
-			figure->FigureColor = FigureColors::white;
-			Figures[6][j] = figure;
-		}
-	}
 
+	//Конструктор класса
+	//здесь же происходит расстановка фигур
+	Field();
+
+	//деструктор
+	~Field();
+
+	//проверка действительно ли это поле есть на доске
+	bool CellIsValid(int i, int j);
+
+	//Очистка ходов
+	void ClearMove(); 
+
+	//Выбрать фигуру
+	bool SelectFigure(int i, int j)
 };
 

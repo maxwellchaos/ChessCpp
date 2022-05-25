@@ -1,21 +1,23 @@
 #pragma once
-#include "Field.h"
+
+class Field;
 
 //Абстрактный класс фигуры
 class Figure
 {
-protected:
-    Field* _field;
-
 public:
-    FigureTypes FigureType;
-    FigureColors FigureColor;
+    class Field* _field = nullptr;
+
+
+    int FigureType;
+    int FigureColor;
     
 
     //это виртуальный метод, его обязательно нужно переопределить в потомке - у каждой фигуры-потомка
     // для каждой фигуры такой метод будет отмечать разные поля
     //Этот метод отмечает все поля на поле, куда может ходить эта фигура
-    virtual void AllMoves() = 0;
+    //Принимает координаты фигуры
+    virtual void AllMoves(int i,int j) = 0;
 
 };
 
@@ -24,11 +26,11 @@ public:
 enum FigureTypes
 {
     king = 9000,//король
-    queen = 9,//ферзь
-    bishop = 3,//слон
-    knight = 3,//конь
-    rock = 5,//ладья
-    pawn = 1//пешка
+    queen = 90,//ферзь
+    bishop = 35,//слон
+    knight = 30,//конь
+    rock = 50,//ладья
+    pawn = 10//пешка
 };
 
 //Цвет фигуры

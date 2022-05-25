@@ -1,16 +1,16 @@
 #pragma once
-#include "Field.h"
 #include "Figure.h"
+#include "Field.h"
 
-
-class Pawn :
+class Rock :
     public Figure
 {
 public:
     //Конструктор
-    Pawn(Field* field);
+    Rock(Field* field);
+    
 
     void AllMoves(int i, int j);
-    
+   
 };
 
