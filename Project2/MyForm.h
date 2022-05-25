@@ -24,6 +24,9 @@ namespace Project2 {
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 	public:
+		//Размер одной клетки поля на форме
+		//применяется для отрисовки и вычисления координат клика
+		const int fieldSize = 70;
 		MyForm(void)
 		{
 			InitializeComponent();
@@ -89,6 +92,7 @@ namespace Project2 {
 			this->pictureBox2->TabIndex = 1;
 			this->pictureBox2->TabStop = false;
 			this->pictureBox2->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::pictureBox2_Paint);
+			this->pictureBox2->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::pictureBox2_MouseDown);
 			// 
 			// button2
 			// 
@@ -125,28 +129,23 @@ namespace Project2 {
 
 		}
 #pragma endregion
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-
-		pictureBox2->Invalidate();
-
-	}
-	private: System::Void pictureBox2_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-		int fieldSize = 70;
-		Brush ^b = Brushes::Black;
-
-		for (int i = 0; i < 8; i++)
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
-			if (b == Brushes::Black)
+			pictureBox2->Invalidate();
+		}
+	private: System::Void pictureBox2_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) 
+		{
+			//Кисть для рисования текущей клетки
+			//начать рисовать надо с черного
+			Brush^ b = Brushes::Black;
+			//Кисть для выделения
+			Brush^ SelectedBrush = gcnew SolidBrush(Color::FromArgb(100, 255, 0, 0));
+			//Кисть для выделения ходящей фигуры 
+			Brush^ SelectedFigureBrush = gcnew SolidBrush(Color::FromArgb(170, 0, 255, 0));
+			//Перебираю все строки
+			for (int i = 0; i < 8; i++)
 			{
-				b = Brushes::White;
-			}
-			else
-			{
-				b = Brushes::Black;
-			}
-
-			for (int j = 0; j < 8; j++)
-			{
+				//каждую строку начинаю с переключения цвета
 				if (b == Brushes::Black)
 				{
 					b = Brushes::White;
@@ -155,102 +154,171 @@ namespace Project2 {
 				{
 					b = Brushes::Black;
 				}
-				e->Graphics->FillRectangle(b, j * fieldSize, i * fieldSize, fieldSize, fieldSize);
-				
-				Figure* figure = field->Figures[i][j];
-				if (figure != 0)
+				//перебираю все столбцы в с троке
+				for (int j = 0; j < 8; j++)
 				{
-					if (figure->FigureColor == FigureColors::white)
+					//каждый новый столбец меняю цвет, чтобы получилось чередование черного и белого
+					if (b == Brushes::Black)
 					{
-						if (figure->FigureType == FigureTypes::pawn)
-						{
-							Bitmap^ image1 = gcnew Bitmap("img/белая пешка.png");
-							//Нарисовать пешку
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
-						}
-						if (figure->FigureType == FigureTypes::rock)
-						{
-							Bitmap^ image1 = gcnew Bitmap("img/белая ладья.png");
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
-						}
-						if (figure->FigureType == FigureTypes::queen)
-						{
-							Bitmap^ image1 = gcnew Bitmap("img/белый ферзь.png");
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
-						}
-						if (figure->FigureType == FigureTypes::knight)
-						{
-							Bitmap^ image1 = gcnew Bitmap("img/белый конь.png");
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
-						}
-						if (figure->FigureType == FigureTypes::king)
-						{
-							Bitmap^ image1 = gcnew Bitmap("img/белый король.png");
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
-						}
-						if (figure->FigureType == FigureTypes::bishop)
-						{
-							Bitmap^ image1 = gcnew Bitmap("img/белый слон.png");
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
-						}
+						b = Brushes::White;
 					}
 					else
 					{
-						if (figure->FigureType == FigureTypes::pawn)
+						b = Brushes::Black;
+					}
+					//рисую клетку поля
+					e->Graphics->FillRectangle(b, j * fieldSize, i * fieldSize, fieldSize, fieldSize);
+
+					//РИсую выделение, если оно есть
+					if (field->Moves[i][j])
+					{
+						e->Graphics->FillRectangle(SelectedBrush, j * fieldSize, i * fieldSize, fieldSize, fieldSize);
+					}
+					//РИсую выделение фигуры, если оно есть
+					if (field->Figures[i][j] == field->SelectedFigure && field->SelectedFigure != nullptr)
+					{
+						e->Graphics->FillRectangle(SelectedFigureBrush, j * fieldSize, i * fieldSize, fieldSize, fieldSize);
+					}
+
+					//если на этом поле есть фигура, то рисую фигуру
+					Figure* figure = field->Figures[i][j];
+					if (figure != 0)
+					{
+						if (figure->FigureColor == FigureColors::white)
 						{
-							Bitmap^ image1 = gcnew Bitmap("img/черная пешка.png");
-							//Нарисовать пешку
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							if (figure->FigureType == FigureTypes::pawn)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/белая пешка.png");
+								//Нарисовать пешку
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+							if (figure->FigureType == FigureTypes::rock)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/белая ладья.png");
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+							if (figure->FigureType == FigureTypes::queen)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/белый ферзь.png");
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+							if (figure->FigureType == FigureTypes::knight)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/белый конь.png");
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+							if (figure->FigureType == FigureTypes::king)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/белый король.png");
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+							if (figure->FigureType == FigureTypes::bishop)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/белый слон.png");
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
 						}
-						if (figure->FigureType == FigureTypes::rock)
+						else
 						{
-							Bitmap^ image1 = gcnew Bitmap("img/черная ладья.png");
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
-						}
-						if (figure->FigureType == FigureTypes::queen)
-						{
-							Bitmap^ image1 = gcnew Bitmap("img/черный ферзь.png");
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
-						}
-						if (figure->FigureType == FigureTypes::knight)
-						{
-							Bitmap^ image1 = gcnew Bitmap("img/черный конь.png");
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
-						}
-						if (figure->FigureType == FigureTypes::king)
-						{
-							Bitmap^ image1 = gcnew Bitmap("img/черный король.png");
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
-						}
-						if (figure->FigureType == FigureTypes::bishop)
-						{
-							Bitmap^ image1 = gcnew Bitmap("img/черный слон.png");
-							e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							if (figure->FigureType == FigureTypes::pawn)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/черная пешка.png");
+								//Нарисовать пешку
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+							if (figure->FigureType == FigureTypes::rock)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/черная ладья.png");
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+							if (figure->FigureType == FigureTypes::queen)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/черный ферзь.png");
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+							if (figure->FigureType == FigureTypes::knight)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/черный конь.png");
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+							if (figure->FigureType == FigureTypes::king)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/черный король.png");
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+							if (figure->FigureType == FigureTypes::bishop)
+							{
+								Bitmap^ image1 = gcnew Bitmap("img/черный слон.png");
+								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
+							}
+
 						}
 
 					}
-					
 				}
 			}
 		}
 
-		
-	}
+		private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e)
+		{
+			pictureBox2->Invalidate();
+		}
 
-		   HANDLE hSerial = 0;
-	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e)
-	{
+		//Событие нажатия мышы
+		//Координаты клика в параметре e
+		private: System::Void pictureBox2_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+		{
+			int x = e->X;
+			int y = e->Y;
+			//Вычисление поля по которому кликнули
+			int j = x / fieldSize;
+			int i = y / fieldSize;
 
+			if (field->SelectedFigure != nullptr)
+			{
+				//если есть выделенная фигура
+				if (field->Moves[i][j])
+				{
+					//если выделенная фигура может пойти на клетку по которой кликнули
+					//сделать ход
+					field->Move(i, j);
 
-		pictureBox2->Invalidate();
-	}
+				}
+				else
+				{
+					//если кликнули по клетке, куда нельзя пойти
+					SelelectNewFigure(i, j);
+				}
 
+			}
+			else
+			{
+				//если нет выделенной фигуры
+				SelelectNewFigure(i, j);
+			}
+
+			//Перерисовать поле
+			pictureBox2->Invalidate();
+			return;
+
+		}
+		//метод для выделения фигуры
+		void SelelectNewFigure(int i, int j)
+		{
+			//усли в клетке есть фигура
+			if (field->Figures[i][j] != nullptr)
+			{
+				//если у фигуры цвет тех, кто сейча сходит
+				if (field->Figures[i][j]->FigureColor == field->CurrentMoveColor)
+				{
+					//выделить фигурц и вернуться
+					field->SelectFigure(i, j);
+					return;
+				}
+			}
+			//отменить выделение фигуры
+			field->ClearMove();
+			field->SelectedFigure = nullptr;
+		}
 	};
 }
-
-	
-
-
-//a = AB/OA
-//a = tg(b)
-//b = arctg(a)

@@ -6,111 +6,84 @@ Rock::Rock(Field* field)
     _field = field;
 }
 
+//метод для проверки каждой ячейки на отмечание ее
+//возвращает нужно ли выделять дальше
+bool Rock::CheckCell(int i, int j)
+{
+    if (_field->CellIsValid(i, j))
+    {
+        Figure* figure = _field->Figures[i][j];
+        //если клетка свободная, то помечаем ее доступной для хода
+        if (figure == 0)
+        {
+            _field->Moves[i][j] = true;
+            return true;
+        }
+        //если клетка занята своей фигурой, то дальше уже не считаем
+        if (figure->FigureColor == this->FigureColor)
+        {
+            return false;
+        }
+        else
+        {
+            //если клетка занята чужой фигурой, то  помечаем доступной для хода 
+            //и дальше уже не считаем
+            _field->Moves[i][j] = true;
+            return false;
+        }
+    }
+    return false;
+}
+
 void Rock::AllMoves(int i, int j)
 {
     _field->ClearMove();
     //Вниз
-    for (int x = i; x < 8; x++)
+    for (int x = i+1; x < 8; x++)
     {
-        if (_field->CellIsValid(x, j))
+        if (CheckCell(x, j))
         {
-            Figure* figure = _field->Figures[x][j];
-            //если клетка свободная, то помечаем ее доступной для хода
-            if (figure == 0)
-            {
-                _field->Moves[x][j] = true;
-                continue;
-            }
-            //если клетка занята своей фигурой, то дальше уже не считаем
-            if (figure->FigureColor == this->FigureColor)
-            {
-                break;
-            }
-            else
-            {
-                //если клетка занята чужой фигурой, то  помечаем доступной для хода 
-                //и дальше уже не считаем
-                _field->Moves[x][j] = true;
-                break;
-            }
+            continue;
+        }
+        else
+        {
+            break;
         }
     }
     //Вверх
-    for (int x = i; x >= 0; x--)
+    for (int x = i-1; x >= 0; x--)
     {
-        if (_field->CellIsValid(x, j))
+        if (CheckCell(x, j))
         {
-            Figure* figure = _field->Figures[x][j];
-            //если клетка свободная, то помечаем ее доступной для хода
-            if (figure == 0)
-            {
-                _field->Moves[x][j] = true;
-                continue;
-            }
-            //если клетка занята своей фигурой, то дальше уже не считаем
-            if (figure->FigureColor == this->FigureColor)
-            {
-                break;
-            }
-            else
-            {
-                //если клетка занята чужой фигурой, то  помечаем доступной для хода 
-                //и дальше уже не считаем
-                _field->Moves[x][j] = true;
-                break;
-            }
+            continue;
+        }
+        else
+        {
+            break;
         }
     }
     //Вправо
-    for (int x = j; x < 8; x++)
+    for (int x = j+1; x < 8; x++)
     {
-        if (_field->CellIsValid(x, j))
+        if (CheckCell(i, x))
         {
-            Figure* figure = _field->Figures[x][j];
-            //если клетка свободная, то помечаем ее доступной для хода
-            if (figure == 0)
-            {
-                _field->Moves[x][j] = true;
-                continue;
-            }
-            //если клетка занята своей фигурой, то дальше уже не считаем
-            if (figure->FigureColor == this->FigureColor)
-            {
-                break;
-            }
-            else
-            {
-                //если клетка занята чужой фигурой, то  помечаем доступной для хода 
-                //и дальше уже не считаем
-                _field->Moves[x][j] = true;
-                break;
-            }
+            continue;
+        }
+        else
+        {
+            break;
         }
     }
     //Влево
-    for (int x = j; x >= 0; x--)
+    for (int x = j-1; x >= 0; x--)
     {
-        if (_field->CellIsValid(x, j))
+        if (CheckCell(i, x))
         {
-            Figure* figure = _field->Figures[x][j];
-            //если клетка свободная, то помечаем ее доступной для хода
-            if (figure == 0)
-            {
-                _field->Moves[x][j] = true;
-                continue;
-            }
-            //если клетка занята своей фигурой, то дальше уже не считаем
-            if (figure->FigureColor == this->FigureColor)
-            {
-                break;
-            }
-            else
-            {
-                //если клетка занята чужой фигурой, то  помечаем доступной для хода 
-                //и дальше уже не считаем
-                _field->Moves[x][j] = true;
-                break;
-            }
+            continue;
+        }
+        else
+        {
+            break;
         }
     }
 }

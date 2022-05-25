@@ -25,8 +25,10 @@ public:
 
 	//Выбранная фигура
 	Figure* SelectedFigure = 0;
+	int SelectedFigureI = 0;
+	int SelectedFigureJ = 0;
 
-	int CurrentMove = FigureColors::white;
+	int CurrentMoveColor = FigureColors::white;
 
 
 	//Конструктор класса
@@ -43,6 +45,9 @@ public:
 	void ClearMove(); 
 
 	//Выбрать фигуру
-	bool SelectFigure(int i, int j)
+	bool SelectFigure(int i, int j);
+
+	//Сделать ход выделенной фигурой
+	bool Move(int i, int j);
 };
 

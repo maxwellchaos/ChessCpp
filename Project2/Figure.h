@@ -8,7 +8,7 @@ class Figure
 public:
     class Field* _field = nullptr;
 
-
+    
     int FigureType;
     int FigureColor;
     
@@ -22,7 +22,7 @@ public:
 };
 
 //Тип фигуры
-//Значение фигурф - это ее ценность для вычисления позиции
+//Значение типа фигуры - это ее ценность для вычисления позиции на доске
 enum FigureTypes
 {
     king = 9000,//король
