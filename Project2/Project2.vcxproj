@@ -121,6 +121,7 @@
     <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Figure.cpp" />
+    <ClCompile Include="Knight.cpp" />
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Queen.cpp" />

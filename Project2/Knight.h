@@ -7,16 +7,9 @@ class Knight :
 {
 public:
     //Конструктор
-    Knight(Field* field)
-    {
-        FigureType = FigureTypes::knight;
-        _field = field;
-    }
+    Knight(Field* field);
 
     //
-    void AllMoves(int i, int j)
-    {
-
-    }
+    void AllMoves(int i, int j);
 };
 

@@ -9,7 +9,6 @@ public:
     //Конструктор
     Queen(Field* field);
 
-    
     void AllMoves(int i, int j);
 };
 
