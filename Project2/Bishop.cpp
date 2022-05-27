@@ -7,36 +7,45 @@ Bishop::Bishop(Field* field)
 }
 
 
-
-void Bishop::AllMoves(int i, int j)
+void Bishop::FillAttackMap(int i, int j)
 {
-    _field->ClearMove();
-    for (int x = i + 1, y = j+1; x < 8; x++,y++)
+    FillMap(i, j, true);
+}
+
+void Bishop::FillMap(int i, int j,bool attack)
+{
+    for (int x = i + 1, y = j + 1; x < 8; x++, y++)
     {
-        if (CheckCell(x, y))
+        if (CheckCell(x, y, attack))
             continue;
         else
             break;
     }
     for (int x = i - 1, y = j + 1; x < 8; x--, y++)
     {
-        if (CheckCell(x, y))
+        if (CheckCell(x, y, attack))
             continue;
         else
             break;
     }
     for (int x = i + 1, y = j - 1; x < 8; x++, y--)
     {
-        if (CheckCell(x, y))
+        if (CheckCell(x, y, attack))
             continue;
         else
             break;
     }
     for (int x = i - 1, y = j - 1; x < 8; x--, y--)
     {
-        if (CheckCell(x, y))
+        if (CheckCell(x, y, attack))
             continue;
         else
             break;
     }
+}
+
+
+void Bishop::FillMovesMap(int i, int j)
+{
+    FillMap(i, j, false);
 }

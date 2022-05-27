@@ -60,6 +60,7 @@ namespace Project2 {
 
 		   //Игровое поле для шахмат
 	private: Field* field;
+	private: System::Windows::Forms::Label^ label1;
 
 
 	protected:
@@ -80,6 +81,7 @@ namespace Project2 {
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->label1 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -96,7 +98,7 @@ namespace Project2 {
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(718, 140);
+			this->button2->Location = System::Drawing::Point(727, 141);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(75, 23);
 			this->button2->TabIndex = 3;
@@ -106,7 +108,7 @@ namespace Project2 {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(718, 86);
+			this->button1->Location = System::Drawing::Point(727, 79);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(75, 23);
 			this->button1->TabIndex = 2;
@@ -114,11 +116,21 @@ namespace Project2 {
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(740, 215);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(35, 13);
+			this->label1->TabIndex = 4;
+			this->label1->Text = L"label1";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1149, 743);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->pictureBox2);
@@ -126,6 +138,7 @@ namespace Project2 {
 			this->Text = L"MyForm";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -257,6 +270,40 @@ namespace Project2 {
 					}
 				}
 			}
+			//показать состояние игры в label1
+			if (field->Checkmate)
+			{
+				if (field->CurrentMoveColor == FigureColors::white)
+				{
+					label1->Text = "мат белым";
+				}
+				else
+				{
+					label1->Text = "мат черным";
+				}
+			}
+			else if (field->Check)
+			{
+				if (field->CurrentMoveColor == FigureColors::white)
+				{
+					label1->Text = "шах белым";
+				}
+				else
+				{
+					label1->Text = "шах черным";
+				}
+			}
+			else
+			{
+				if (field->CurrentMoveColor == FigureColors::white)
+				{
+					label1->Text = "ходят белые";
+				}
+				else
+				{
+					label1->Text = "ходят черные";
+				}
+			}
 		}
 
 		private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e)
@@ -317,7 +364,7 @@ namespace Project2 {
 				}
 			}
 			//отменить выделение фигуры
-			field->ClearMove();
+			field->ClearMovesMap();
 			field->SelectedFigure = nullptr;
 		}
 	};

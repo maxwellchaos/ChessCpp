@@ -5,13 +5,10 @@ Pawn::Pawn(Field* field)
     FigureType = FigureTypes::pawn;
     _field = field;
 }
-void Pawn::AllMoves(int i, int j)
+void Pawn::FillMovesMap(int i, int j)
 {
-    //очистить массив ходов
-    _field->ClearMove();
-
     //если пешка белая
-    if(FigureColor == FigureColors::white)
+    if (FigureColor == FigureColors::white)
     {
         if (_field->CellIsValid(i - 1, j))
             if (_field->Figures[i - 1][j] == nullptr)
@@ -61,5 +58,34 @@ void Pawn::AllMoves(int i, int j)
             if (_field->Figures[i + 1][j - 1] != nullptr)
                 if (_field->Figures[i + 1][j - 1]->FigureColor != FigureColor)
                     _field->Moves[i + 1][j - 1] = true;
+    }
+}
+
+//Считает карту атак фигуры
+//Заполняет все поля массива Moves на которые следующим ходом может атаковать фигура
+//Этот метод нужен только чтобы определить возможные ходы короля
+void Pawn::FillAttackMap(int i, int j)
+{
+    //если пешка белая
+    if (FigureColor == FigureColors::white)
+    {
+
+        //атака влево
+        if (_field->CellIsValid(i - 1, j - 1))
+            _field->Moves[i - 1][j - 1] = true;
+        //атака вправо
+        if (_field->CellIsValid(i - 1, j + 1))
+            _field->Moves[i - 1][j + 1] = true;
+    }
+    //если пешка черная
+    if (FigureColor == FigureColors::black)
+    {
+
+        //атака влево
+        if (_field->CellIsValid(i + 1, j + 1))
+            _field->Moves[i + 1][j + 1] = true;
+        //атака вправо
+        if (_field->CellIsValid(i + 1, j - 1))
+            _field->Moves[i + 1][j - 1] = true;
     }
 }

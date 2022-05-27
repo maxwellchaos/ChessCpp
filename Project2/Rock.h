@@ -9,8 +9,9 @@ public:
     //Конструктор
     Rock(Field* field);
     
-
-    void AllMoves(int i, int j);
+    void FillMap(int i, int j, bool attack);
+    void FillAttackMap(int i, int j);
+    void FillMovesMap(int i, int j);
    
 };
 

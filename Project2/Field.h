@@ -28,7 +28,12 @@ public:
 	int SelectedFigureI = 0;
 	int SelectedFigureJ = 0;
 
+	//Какой цвет сейчас ходит
 	int CurrentMoveColor = FigureColors::white;
+
+	//Состояния игры
+	bool Check = false;//Шах
+	bool Checkmate = false;//мат
 
 
 	//Конструктор класса
@@ -42,12 +47,15 @@ public:
 	bool CellIsValid(int i, int j);
 
 	//Очистка ходов
-	void ClearMove(); 
+	void ClearMovesMap(); 
 
 	//Выбрать фигуру
 	bool SelectFigure(int i, int j);
 
 	//Сделать ход выделенной фигурой
 	bool Move(int i, int j);
+
+	//посмотреть все возможные ходы одного цвета
+	void GetAllattackMap(int Color);
 };
 

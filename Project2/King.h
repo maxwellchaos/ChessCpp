@@ -5,18 +5,18 @@
 class King :
     public Figure
 {
+private:
+    //В этом массиве собираюся все возможные ходы противника, 
+    //чтобы можно было вычислить возможные ходы короля
+    int Moves[8][8];
 public:
     //Конструктор
-    King(Field* field)
-    {
-        FigureType = FigureTypes::king;
-        _field = field;
-    }
+    King(Field* field);
 
-    //
-    void AllMoves(int i, int j)
-    {
+    void FillMovesMap(int i, int j);
 
-    }
+    void FillMovesMapWithClear(int i, int j);
+
+    void FillAttackMap(int i, int j);
 };
 

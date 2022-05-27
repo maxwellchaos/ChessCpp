@@ -9,7 +9,10 @@ public:
     //Конструктор
     Bishop(Field* field);
 
-    void AllMoves(int i, int j);
+    void FillMap(int i, int j,bool attack);
+
+    void FillMovesMap(int i, int j);
+    void FillAttackMap(int i, int j);
    
 };
 

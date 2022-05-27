@@ -12,7 +12,7 @@ Field::Field()
 	}
 
 	//ќчистка ходов 
-	ClearMove();
+	ClearMovesMap();
 
 	//здесь создаю и настраиваю фигуру
 	Figure* figure;
@@ -118,8 +118,9 @@ bool Field::CellIsValid(int i, int j)
 	return (i >= 0) && (j >= 0) && (i < 8) && (j < 8);
 }
 
-void Field::ClearMove()
+void Field::ClearMovesMap()
 {
+	//присваиваетс€ false всем элементам массива
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
@@ -149,7 +150,7 @@ bool Field::SelectFigure(int i, int j)
 		SelectedFigure = figure;
 		SelectedFigureI = i;
 		SelectedFigureJ = j;
-		figure->AllMoves(i,j);
+		figure->FillMovesMapWithClear(i,j);
 	}
 	return true;
 }
@@ -170,22 +171,39 @@ bool Field::Move(int i, int j)
 	//переместить фигуру
 	Figures[i][j] = SelectedFigure;
 	
-	//очистить все переменые
+	//очистить все переменые св€занные с клеткой и выбранной фигурой
 	Figures[SelectedFigureI][SelectedFigureJ] = nullptr;
 	SelectedFigure = nullptr;
 
 	//переключить цвет
-	if (CurrentMoveColor == FigureColors::black)
-	{
-		CurrentMoveColor = FigureColors::white;
-	}
-	else
-	{
-		CurrentMoveColor = FigureColors::black;
-	}
+	CurrentMoveColor = Figure::InverseColor(CurrentMoveColor);
 
-	ClearMove();
+	ClearMovesMap();
 	return true;
+}
+
+//посмотреть все возможные ходы одного цвета
+void Field::GetAllattackMap(int Color)
+{
+	//очистить все ходы
+	ClearMovesMap();
+	//перебрать все фигуры
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			//≈сли фигура есть на этом поле
+			if (Figures[i][j] != nullptr)
+			{
+				//≈сли фигура нужного цвета
+				if (Figures[i][j]->FigureColor == Color)
+				{
+					//ƒобавить все ее возможные атаки к общей карте возможных атак
+					Figures[i][j]->FillAttackMap(i,j);
+				}
+			}
+		}
+	}
 }
 
 //деструктор

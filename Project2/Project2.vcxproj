@@ -121,6 +121,7 @@
     <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Figure.cpp" />
+    <ClCompile Include="King.cpp" />
     <ClCompile Include="Knight.cpp" />
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="Pawn.cpp" />
@@ -162,6 +163,11 @@
     <Image Include="Img\черный король.png" />
     <Image Include="Img\черный слон.png" />
     <Image Include="Img\черный ферзь.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
