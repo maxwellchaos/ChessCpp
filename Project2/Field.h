@@ -1,11 +1,5 @@
 #pragma once
 #include "Figure.h"
-#include "Pawn.h"
-#include "Rock.h"
-#include "Queen.h"
-#include "King.h"
-#include "Knight.h"
-#include "Bishop.h"
 
 //Класс игровое поле
 class Field
@@ -18,6 +12,11 @@ public:
 	///так же для понятности буду использовать индекс i для строк
 	///												  j для столбцов
 
+	//Для облегчения доступа к королям
+	Figure* WhiteKing = nullptr;
+	Figure* BlackKing = nullptr;
+
+
 	//массив фигур
 	Figure* Figures[8][8];
 	//булев массив возможных ходов
@@ -25,8 +24,7 @@ public:
 
 	//Выбранная фигура
 	Figure* SelectedFigure = 0;
-	int SelectedFigureI = 0;
-	int SelectedFigureJ = 0;
+
 
 	//Какой цвет сейчас ходит
 	int CurrentMoveColor = FigureColors::white;
@@ -39,6 +37,10 @@ public:
 	//Конструктор класса
 	//здесь же происходит расстановка фигур
 	Field();
+
+	//Конструктор копирования
+	//Создает копию текущей доски
+	Field(Field*field);
 
 	//деструктор
 	~Field();
@@ -56,6 +58,13 @@ public:
 	bool Move(int i, int j);
 
 	//посмотреть все возможные ходы одного цвета
-	void GetAllattackMap(int Color);
+	void GetAllAttackMap(int Color);
+
+	//Проверка на шах и мат
+	//Для заданного цвета
+	bool CheckTest(int color);
+
+
+	void CopyToMe(Field* field);
 };
 
