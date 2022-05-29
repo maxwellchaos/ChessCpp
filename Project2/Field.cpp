@@ -5,6 +5,7 @@
 #include "King.h"
 #include "Knight.h"
 #include "Bishop.h"
+#include <stdexcept>
 
 Field::Field()
 {
@@ -159,6 +160,7 @@ bool Field::CellIsValid(int i, int j)
 	return (i >= 0) && (j >= 0) && (i < 8) && (j < 8);
 }
 
+//чищу массив карт
 void Field::ClearMovesMap()
 {
 	//присваивается false всем элементам массива
@@ -190,17 +192,19 @@ bool Field::SelectFigure(int i, int j)
 	{
 		SelectedFigure = figure;
 		figure->FillMovesMapWithClear(i,j);
+		return true;
 	}
-	return true;
+	return false;
 }
 
 //Сделать ход выделенной фигурой
-bool Field::Move(int i, int j)
+bool Field::Move(int i, int j,bool withoutCheckmate)
 {
 	
 	if (Checkmate)
 	{
 		//мат уже поставлен
+		
 		return false;
 	}
 
@@ -212,16 +216,6 @@ bool Field::Move(int i, int j)
 
 	//Копирую всю игру
 	Field* oldField = new Field(this);
-
-
-	//if (CheckTest(Figure::InverseColor( CurrentMoveColor)))
-	//{
-	//	ClearMovesMap();
-	//	//все еще шах, нельзя так ходить
-	//	return false;
-	//}
-
-	
 
 	//Удалить фигуру, если была сбита
 	if (Figures[i][j] != nullptr)
@@ -257,6 +251,13 @@ bool Field::Move(int i, int j)
 	//Выставляю шах, если он есть
 	CheckTest(CurrentMoveColor);
 
+	//Не проверять на мат
+	//Это нужно для проверки на мат, чтобы не уходило в рекурсию
+	if (!withoutCheckmate)
+	{
+		//Проверяю на мат
+		CheckmateTest(CurrentMoveColor);
+	}
 	//переключить цвет
 	CurrentMoveColor = Figure::InverseColor(CurrentMoveColor);
 
@@ -307,6 +308,7 @@ Field::~Field()
 	}
 }
 
+
 bool Field::CheckTest(int color)
 {
 	GetAllAttackMap(color);
@@ -346,7 +348,7 @@ void Field::CopyToMe(Field* field)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			//Удаляю фигурф, если они есть
+			//Удаляю фигуры, если они есть
 			if (Figures[i][j] != nullptr)
 			{
 				delete Figures[i][j];
@@ -426,4 +428,84 @@ void Field::CopyToMe(Field* field)
 			}
 		}
 	}
+}
+
+//ПРоверка на мат для заданного цвета
+//фигуры заданного цвета поставили мат
+bool Field::CheckmateTest(int color)
+{
+	//Алгоритм проверки на мат:
+	//ПРоверить все возможные ходы всех возможных фигур выбранного цвета
+	//если после хода каждой сохранятеся шах, то поставлен мат
+	
+	//Кому поставили мат
+	int matedColor = Figure::InverseColor(color);
+
+	//Изначально считаем, что мат
+	Checkmate = true;
+
+	//два фора и два иф - проверка всех фигур заданного цвета
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			Figure* figure = Figures[i][j];
+			if(figure!= nullptr)
+				if (figure->FigureColor == matedColor)
+				{
+					//Это выполнится для каждой фигуры заданного цвета
+					
+					//собирает карту ходов фигуры
+					figure->FillMovesMapWithClear(i, j);
+
+					
+					//Проверяет все возможные ходы фигуры на сохранение шаха
+					//Здесь слишком большая вложенность, поэтому дроблю это на функции
+					Checkmate = CheckAllMovesFigure(figure, color);
+					
+					if (!Checkmate)
+					{
+						//Есть спасительный ход
+						return false;
+					}
+				}
+		}
+	}
+	return Checkmate;
+}
+
+
+//Проверить все ходы фигуры и вернуть True, если после любого хода будет шах
+bool Field::CheckAllMovesFigure(Figure* figure,int color)
+{
+	//Поле для проверки одного хода
+	Field* oneMoveField = new Field();
+
+
+	//Здесь уже есть карта ходов фигуры
+	//для всех ходов в карте
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (Moves[i][j])
+			{
+				// скопировать поле
+				oneMoveField->CopyToMe(this);
+				//Меняю цвет, чтобы можно было ходить
+				oneMoveField->CurrentMoveColor = Figure::InverseColor(oneMoveField->CurrentMoveColor);
+
+				//сделать ход
+				oneMoveField->SelectFigure(figure->i, figure->j);
+				
+				oneMoveField->Move(i, j,true);
+				//проверить шах
+				if (!oneMoveField->CheckTest(color))
+				{
+					return false;
+				}
+			}
+		}
+	}
+	return true;
 }

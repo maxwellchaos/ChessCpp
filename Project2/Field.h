@@ -55,16 +55,24 @@ public:
 	bool SelectFigure(int i, int j);
 
 	//Сделать ход выделенной фигурой
-	bool Move(int i, int j);
+	bool Move(int i, int j, bool withoutCheckmate = false);
 
 	//посмотреть все возможные ходы одного цвета
 	void GetAllAttackMap(int Color);
 
-	//Проверка на шах и мат
+	//Проверка на шах
 	//Для заданного цвета
+	//Фигуры заданного цвета поставили шах 
 	bool CheckTest(int color);
 
-
+	//Копировать все фигуры и состояние
 	void CopyToMe(Field* field);
+
+	//ПРоверка на мат для заданного цвета
+	//фигуры заданного цвета поставили мат
+	bool CheckmateTest(int color);
+
+	//Проверить все ходы фигуры и вернуть True, если после любого хода будет шах
+	bool CheckAllMovesFigure(Figure*figure,int color);
 };
 

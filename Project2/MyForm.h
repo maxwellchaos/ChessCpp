@@ -31,9 +31,6 @@ namespace Project2 {
 		{
 			InitializeComponent();
 			bmp = (gcnew System::Drawing::Bitmap(1000, 1000));
-			//
-			//TODO: добавьте код конструктора
-			//
 
 			//Создание игрового поля
 			field = new Field();
