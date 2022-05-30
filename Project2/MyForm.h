@@ -4,6 +4,7 @@
 #include<iostream>
 #include <windows.h>
 #include "Field.h"
+#include "AI.h"
 
 
 //Класс окна интерфейса
@@ -34,6 +35,7 @@ namespace Project2 {
 
 			//Создание игрового поля
 			field = new Field();
+			ai = new AI();
 		}
 
 	protected:
@@ -57,6 +59,8 @@ namespace Project2 {
 
 		   //Игровое поле для шахмат
 	private: Field* field;
+
+	private: AI* ai;
 	private: System::Windows::Forms::Label^ label1;
 
 
@@ -308,7 +312,7 @@ namespace Project2 {
 			pictureBox2->Invalidate();
 		}
 
-		//Событие нажатия мышы
+		//Событие нажатия мыши
 		//Координаты клика в параметре e
 		private: System::Void pictureBox2_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 		{
@@ -325,7 +329,11 @@ namespace Project2 {
 				{
 					//если выделенная фигура может пойти на клетку по которой кликнули
 					//сделать ход
-					field->Move(i, j);
+					bool MoveResult = field->Move(i, j);
+					if (MoveResult)
+					{
+						ai->BestMove(field, field->CurrentMoveColor);
+					}
 
 				}
 				else
@@ -355,7 +363,7 @@ namespace Project2 {
 				//если у фигуры цвет тех, кто сейча сходит
 				if (field->Figures[i][j]->FigureColor == field->CurrentMoveColor)
 				{
-					//выделить фигурц и вернуться
+					//выделить фигуру и вернуться
 					field->SelectFigure(i, j);
 					return;
 				}

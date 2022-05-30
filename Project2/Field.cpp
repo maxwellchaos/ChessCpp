@@ -475,12 +475,11 @@ bool Field::CheckmateTest(int color)
 }
 
 
-//Проверить все ходы фигуры и вернуть True, если после любого хода будет шах
+//Проверить все ходы одной фигуры и вернуть True, если после каждого хода будет шах
 bool Field::CheckAllMovesFigure(Figure* figure,int color)
 {
 	//Поле для проверки одного хода
 	Field* oneMoveField = new Field();
-
 
 	//Здесь уже есть карта ходов фигуры
 	//для всех ходов в карте

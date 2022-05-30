@@ -48,6 +48,9 @@
     <ClCompile Include="King.cpp">
       <Filter>Исходные файлы\фигуры</Filter>
     </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyForm.h">
@@ -79,6 +82,12 @@
     </ClInclude>
     <ClInclude Include="Rock.h">
       <Filter>Файлы заголовков\Фигуры</Filter>
+    </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
