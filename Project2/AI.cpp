@@ -3,6 +3,8 @@
 
 Move* AI::BestMove(Field*field,int color)
 {
+	if (field->Checkmate)
+		return nullptr;
 	Moves.clear();
 	//Собрать список всех возможных ходов
 	

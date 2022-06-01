@@ -265,9 +265,7 @@ namespace Project2 {
 								Bitmap^ image1 = gcnew Bitmap("img/черный слон.png");
 								e->Graphics->DrawImage(image1, j * fieldSize, i * fieldSize);
 							}
-
 						}
-
 					}
 				}
 			}
@@ -334,14 +332,12 @@ namespace Project2 {
 					{
 						ai->BestMove(field, field->CurrentMoveColor);
 					}
-
 				}
 				else
 				{
 					//если кликнули по клетке, куда нельз€ пойти
 					SelelectNewFigure(i, j);
 				}
-
 			}
 			else
 			{
@@ -352,7 +348,6 @@ namespace Project2 {
 			//ѕерерисовать поле
 			pictureBox2->Invalidate();
 			return;
-
 		}
 		//метод дл€ выделени€ фигуры
 		void SelelectNewFigure(int i, int j)
