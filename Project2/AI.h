@@ -6,7 +6,11 @@
 //Класс искусственного интелекта
 class AI
 {
+	//Двусвязная очередь ходов
+	//подробнее об ней https://metanit.com/cpp/tutorial/7.8.php
+	//Это очередь из всех возможных ходов всех фигур одного цвета.
 	std::deque<Move> Moves;
+
 	Move bestMove;
 
 public:

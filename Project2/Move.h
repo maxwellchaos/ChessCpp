@@ -6,10 +6,13 @@
 class Move
 {
 public:
+	//Координаты фигуры, которая делает ход
 	int StartI;
 	int StartJ;
+	//Координаты, куда делаем ход
 	int FinishI;
 	int FinishJ;
+	//Эффективность хода. по умолчанию 0
 	double efficiency = 0;
 };
 
