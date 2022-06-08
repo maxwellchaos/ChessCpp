@@ -508,3 +508,31 @@ bool Field::CheckAllMovesFigure(Figure* figure,int color)
 	}
 	return true;
 }
+
+
+int Field::CalcPosition(int color)
+{
+
+	int position = 0;
+	//Сложить все типы фигур заданного цвета
+	//Вычесть все типы фигур вражеского цвета
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (Figures[i][j]!= nullptr)
+			{
+				if (Figures[i][j]->FigureColor == color)
+				{
+					position += Figures[i][j]->FigureType;
+				}
+				else
+				{
+					position -= Figures[i][j]->FigureType;
+				}
+
+			}
+		}
+	}
+	return position;
+}

@@ -54,8 +54,8 @@ namespace Project2 {
 
 
 	private: System::Drawing::Bitmap^ bmp;
-	private: System::Windows::Forms::Button^ button2;
-	private: System::Windows::Forms::Button^ button1;
+
+
 
 		   //Игровое поле для шахмат
 	private: Field* field;
@@ -80,8 +80,6 @@ namespace Project2 {
 		void InitializeComponent(void)
 		{
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
-			this->button2 = (gcnew System::Windows::Forms::Button());
-			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
@@ -97,32 +95,14 @@ namespace Project2 {
 			this->pictureBox2->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::pictureBox2_Paint);
 			this->pictureBox2->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::pictureBox2_MouseDown);
 			// 
-			// button2
-			// 
-			this->button2->Location = System::Drawing::Point(727, 141);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(75, 23);
-			this->button2->TabIndex = 3;
-			this->button2->Text = L"button2";
-			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
-			// 
-			// button1
-			// 
-			this->button1->Location = System::Drawing::Point(727, 79);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
-			this->button1->TabIndex = 2;
-			this->button1->Text = L"button1";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
-			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
 			this->label1->Location = System::Drawing::Point(740, 215);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(35, 13);
+			this->label1->Size = System::Drawing::Size(70, 26);
 			this->label1->TabIndex = 4;
 			this->label1->Text = L"label1";
 			// 
@@ -132,8 +112,6 @@ namespace Project2 {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1149, 743);
 			this->Controls->Add(this->label1);
-			this->Controls->Add(this->button2);
-			this->Controls->Add(this->button1);
 			this->Controls->Add(this->pictureBox2);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
@@ -151,6 +129,7 @@ namespace Project2 {
 		{
 			//Кисть для рисования текущей клетки
 			//начать рисовать надо с черного
+			//	знак ^ - это особый вид указателя - управляемый указатель.
 			Brush^ b = Brushes::Black;
 			//Кисть для выделения
 			Brush^ SelectedBrush = gcnew SolidBrush(Color::FromArgb(100, 255, 0, 0));
@@ -367,5 +346,6 @@ namespace Project2 {
 			field->ClearMovesMap();
 			field->SelectedFigure = nullptr;
 		}
-	};
+	
+};
 }

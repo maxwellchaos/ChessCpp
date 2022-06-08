@@ -14,8 +14,17 @@ class AI
 	Move bestMove;
 
 public:
-	//Выбрать лучший ход на поле за заданный цвет
+	//Выбрать случайный ход на поле за заданный цвет
+	Move* RandomMove(Field* field, int color);
+
+	//Выбрать случайный ход на поле за заданный цвет
 	Move* BestMove(Field* field, int color);
-	void AllFigureMovesToVector(Figure* figure,Field * field);
+
+	//Добавляет все возможные ходы фигуры в очередь
+	void AllFigureMovesToDeque(Figure* figure,Field * field);
+
+	//Собрать список всех доступных ходов
+	//Список будет лежать в Moves
+	void CreateMoveList(Field* field, int color);
 };
 

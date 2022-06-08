@@ -74,5 +74,8 @@ public:
 
 	//ѕроверить все ходы фигуры и вернуть True, если после любого хода будет шах
 	bool CheckAllMovesFigure(Figure*figure,int color);
+
+	//ѕодсчитать позицию заданного цвета на доске
+	int CalcPosition(int color);
 };
 
