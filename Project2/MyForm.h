@@ -5,6 +5,7 @@
 #include <windows.h>
 #include "Field.h"
 #include "AI.h"
+#include "FigureMove.h"
 
 
 //Класс окна интерфейса
@@ -59,9 +60,11 @@ namespace Project2 {
 
 		   //Игровое поле для шахмат
 	private: Field* field;
+	
 
 	private: AI* ai;
 	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::Button^ button1;
 
 
 	protected:
@@ -81,6 +84,7 @@ namespace Project2 {
 		{
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -100,17 +104,28 @@ namespace Project2 {
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label1->Location = System::Drawing::Point(740, 215);
+			this->label1->Location = System::Drawing::Point(741, 50);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(70, 26);
 			this->label1->TabIndex = 4;
 			this->label1->Text = L"label1";
+			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(746, 94);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(75, 37);
+			this->button1->TabIndex = 5;
+			this->button1->Text = L"Начать сначала";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click_1);
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1149, 743);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox2);
 			this->Name = L"MyForm";
@@ -309,7 +324,11 @@ namespace Project2 {
 					bool MoveResult = field->Move(i, j);
 					if (MoveResult)
 					{
-						ai->BestMove(field, field->CurrentMoveColor);
+						
+						FigureMove * move = ai->BestMove(field, field->CurrentMoveColor);
+						//Отметка хода
+						field->Moves[move->StartI][move->StartJ] = true;
+						field->Moves[move-> FinishI][move->FinishJ] = true;
 					}
 				}
 				else
@@ -347,5 +366,13 @@ namespace Project2 {
 			field->SelectedFigure = nullptr;
 		}
 	
+private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
+	//Удаление и пересоздание игровых объектов
+	delete field;
+	delete ai;
+	field = new Field();
+	ai = new AI();
+	pictureBox2->Invalidate();
+}
 };
 }

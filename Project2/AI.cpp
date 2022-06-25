@@ -2,7 +2,7 @@
 #include <algorithm>    // std::sort
 
 
-Move* AI::RandomMove(Field*field,int color)
+FigureMove* AI::RandomMove(Field*field,int color)
 {
 	
 	CreateMoveList(field, color);
@@ -37,12 +37,12 @@ Move* AI::RandomMove(Field*field,int color)
 	return &bestMove;
 }
 
-bool CompareFunc(Move i, Move j) 
+bool CompareFunc(FigureMove i, FigureMove j) 
 { 
 	return (i.efficiency < j.efficiency); 
 }
 
-Move* AI::BestMove(Field* field, int color)
+FigureMove* AI::BestMove(Field* field, int color)
 {
 
 	CreateMoveList(field, color);
@@ -87,7 +87,7 @@ void AI::AllFigureMovesToDeque(Figure* figure,Field *field)
 			if (field->Moves[i][j])
 			{
 				//заполнить ход и подсчитать его эффективность
-				Move move;
+				FigureMove move;
 				move.StartI = figure->i;
 				move.StartJ = figure->j;
 				move.FinishI = i;

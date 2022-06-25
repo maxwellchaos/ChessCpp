@@ -1,5 +1,5 @@
 #pragma once
-#include "Move.h"
+#include "FigureMove.h"
 #include "Field.h"
 #include <deque>
 
@@ -9,16 +9,16 @@ class AI
 	//Двусвязная очередь ходов
 	//подробнее об ней https://metanit.com/cpp/tutorial/7.8.php
 	//Это очередь из всех возможных ходов всех фигур одного цвета.
-	std::deque<Move> Moves;
+	std::deque<FigureMove> Moves;
 
-	Move bestMove;
+	FigureMove bestMove;
 
 public:
 	//Выбрать случайный ход на поле за заданный цвет
-	Move* RandomMove(Field* field, int color);
+	FigureMove* RandomMove(Field* field, int color);
 
 	//Выбрать случайный ход на поле за заданный цвет
-	Move* BestMove(Field* field, int color);
+	FigureMove* BestMove(Field* field, int color);
 
 	//Добавляет все возможные ходы фигуры в очередь
 	void AllFigureMovesToDeque(Figure* figure,Field * field);

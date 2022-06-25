@@ -86,7 +86,7 @@
     <ClInclude Include="AI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Move.h">
+    <ClInclude Include="FigureMove.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
