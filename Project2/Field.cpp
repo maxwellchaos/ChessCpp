@@ -200,11 +200,9 @@ bool Field::SelectFigure(int i, int j)
 //—делать ход выделенной фигурой
 bool Field::Move(int i, int j,bool withoutCheckmate)
 {
-	
 	if (Checkmate)
 	{
 		//мат уже поставлен
-		
 		return false;
 	}
 
@@ -225,6 +223,21 @@ bool Field::Move(int i, int j,bool withoutCheckmate)
 	
 	//переместить фигуру
 	Figures[i][j] = SelectedFigure;
+
+	//—делать пешку ферзем
+	if (SelectedFigure->FigureType == FigureTypes::pawn)
+	{
+		if (SelectedFigure->FigureColor == FigureColors::white)
+		{
+			if (i == 0)
+				SelectedFigure->FigureType = FigureTypes::queen;
+		}
+		else
+		{
+			if (i == 7)
+				SelectedFigure->FigureType = FigureTypes::queen;
+		}
+	}
 	
 	//очистить все переменые св€занные с клеткой и выбранной фигурой
 	//берутс€ прошлые ее координаты

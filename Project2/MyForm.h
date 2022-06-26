@@ -63,8 +63,14 @@ namespace Project2 {
 	
 
 	private: AI* ai;
+
+	private:int blackWins = 0;
+	private:int whiteWins = 0;
+
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::Label^ label3;
 
 
 	protected:
@@ -85,6 +91,8 @@ namespace Project2 {
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -120,11 +128,31 @@ namespace Project2 {
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click_1);
 			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(746, 161);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(35, 13);
+			this->label2->TabIndex = 6;
+			this->label2->Text = L"label2";
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(746, 178);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(35, 13);
+			this->label3->TabIndex = 7;
+			this->label3->Text = L"label3";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1149, 743);
+			this->Controls->Add(this->label3);
+			this->Controls->Add(this->label2);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox2);
@@ -142,6 +170,9 @@ namespace Project2 {
 		}
 	private: System::Void pictureBox2_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) 
 		{
+			//отметка побед белых и черных
+			label2->Text = "Пoбед белых: " + whiteWins.ToString();
+			label3->Text = "Пoбед черных: " + blackWins.ToString();
 			//Кисть для рисования текущей клетки
 			//начать рисовать надо с черного
 			//	знак ^ - это особый вид указателя - управляемый указатель.
@@ -322,13 +353,40 @@ namespace Project2 {
 					//если выделенная фигура может пойти на клетку по которой кликнули
 					//сделать ход
 					bool MoveResult = field->Move(i, j);
+					
+
 					if (MoveResult)
 					{
-						
+						if (field->Checkmate)
+						{
+							if (field->CurrentMoveColor == FigureColors::white)
+							{
+								blackWins++;
+							}
+							else
+							{
+								whiteWins++;
+							}
+							return;
+						}
+
 						FigureMove * move = ai->BestMove(field, field->CurrentMoveColor);
+
 						//Отметка хода
 						field->Moves[move->StartI][move->StartJ] = true;
 						field->Moves[move-> FinishI][move->FinishJ] = true;
+						if (field->Checkmate)
+						{
+							if (field->CurrentMoveColor == FigureColors::white)
+							{
+								blackWins++;
+							}
+							else
+							{
+								whiteWins++;
+							}
+							return;
+						}
 					}
 				}
 				else
@@ -366,13 +424,14 @@ namespace Project2 {
 			field->SelectedFigure = nullptr;
 		}
 	
-private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
-	//Удаление и пересоздание игровых объектов
-	delete field;
-	delete ai;
-	field = new Field();
-	ai = new AI();
-	pictureBox2->Invalidate();
-}
-};
+		private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) 
+		{
+			//Удаление и пересоздание игровых объектов
+			delete field;
+			delete ai;
+			field = new Field();
+			ai = new AI();
+			pictureBox2->Invalidate();
+		}
+	};
 }
