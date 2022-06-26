@@ -220,7 +220,30 @@ bool Field::Move(int i, int j,bool withoutCheckmate)
 	{
 		delete Figures[i][j];
 	}
-	
+	//–окировка
+	// ороль пойдет позже - сначала переместить ладью
+	if (SelectedFigure->FigureType == FigureTypes::king)
+	{
+		//≈сли король должен пойти больше чем на одну клетку, то это рокировка
+		if (abs(SelectedFigure->j - j) > 1)
+		{
+			//¬ какую сторону пойдет король
+			if (SelectedFigure->j - j > 0)
+			{
+				//¬лево
+				Figures[i][3] = Figures[i][0];
+				Figures[i][0] = nullptr;
+			}
+			else
+			{
+				//¬право
+				Figures[i][5] = Figures[i][7];
+				Figures[i][7] = nullptr;
+
+			}
+		}
+	}
+
 	//переместить фигуру
 	Figures[i][j] = SelectedFigure;
 
@@ -238,6 +261,8 @@ bool Field::Move(int i, int j,bool withoutCheckmate)
 				SelectedFigure->FigureType = FigureTypes::queen;
 		}
 	}
+
+	
 	
 	//очистить все переменые св€занные с клеткой и выбранной фигурой
 	//берутс€ прошлые ее координаты

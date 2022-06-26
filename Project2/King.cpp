@@ -14,6 +14,66 @@ void King::FillMovesMap(int i, int j)
         {
             CheckCell(x, y,false);
         }
+
+    //Рокировка
+    if (FigureColor == FigureColors::white)
+    {
+        //Король на месте
+        if (i == 7 && j == 4)
+        {
+            //Если справа до ладьи пустые клетки
+            if (_field->Figures[7][6] == nullptr && _field->Figures[7][5] == nullptr)
+            {
+                //Если скраю поля стоит ладья
+                if (_field->Figures[7][7] != nullptr && _field->Figures[7][7]->FigureType == FigureTypes::rock)
+                {
+                    _field->Moves[7][6] = true;
+                }
+
+            }
+            //Если слева до ладьи пустые клетки
+            if (_field->Figures[7][3] == nullptr
+                && _field->Figures[7][2] == nullptr
+                && _field->Figures[7][1] == nullptr)
+            {
+                //Если скраю поля стоит ладья
+                if (_field->Figures[7][0] != nullptr 
+                    && _field->Figures[7][0]->FigureType == FigureTypes::rock)
+                {
+                    _field->Moves[7][2] = true;
+                }
+            }
+        }
+    }
+    else
+    {
+        //Король на месте
+        if (i == 0 && j == 4)
+        {
+            //Если справа до ладьи пустые клетки
+            if (_field->Figures[0][6] == nullptr && _field->Figures[0][5] == nullptr)
+            {
+                //Если скраю поля стоит ладья
+                if (_field->Figures[0][7] != nullptr && _field->Figures[0][7]->FigureType == FigureTypes::rock)
+                {
+                    _field->Moves[0][6] = true;
+                }
+
+            }
+            //Если слева до ладьи пустые клетки
+            if (_field->Figures[0][3] == nullptr
+                && _field->Figures[0][2] == nullptr
+                && _field->Figures[0][1] == nullptr)
+            {
+                //Если скраю поля стоит ладья
+                if (_field->Figures[0][0] != nullptr 
+                    && _field->Figures[0][0]->FigureType == FigureTypes::rock)
+                {
+                    _field->Moves[0][2] = true;
+                }
+            }
+        }
+    }
 }
 
 //Получает все ходы, предварительно очистив ходы, записанные на доске
@@ -69,4 +129,6 @@ void King::FillAttackMap(int i, int j)
         }
     //исключить себя
     _field->Moves[i][j] = false;
+
+   
 }
