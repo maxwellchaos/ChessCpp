@@ -84,6 +84,7 @@ void AI::AllFigureMovesToDeque(Figure* figure,Field *field)
 	{
 		for (int j = 0; j < 8; j++)
 		{
+			//≈сди в карте ходов есть этот ход
 			if (field->Moves[i][j])
 			{
 				//заполнить ход и подсчитать его эффективность
@@ -113,10 +114,21 @@ void AI::AllFigureMovesToDeque(Figure* figure,Field *field)
 				int newPosition = testedField->CalcPosition(figure->FigureColor);
 
 				move.efficiency = oldPosition - newPosition;
-
 				//ƒобавить случайную маленькую величину, чтобы при одинаковых эффективност€х 
-				//выбиралс€ случайный ход. Ёто делаетс€ благодар€ сортировке
+				//выбиралс€ случайный ход. —лучайный ход выбираетс€ благодар€ сортировке
 				move.efficiency += (double)rand() / (RAND_MAX-1);
+
+				
+				//—генерировать карту ходов противника на тестовом поле
+				testedField->GetAllAttackMap(Figure::InverseColor( figure->FigureColor));
+				
+				//≈сли это поле атакуетс€
+				if (testedField->Moves[move.FinishI][move.FinishJ])
+				{
+					//¬ычесть силу фигуры из эффективности
+					move.efficiency += figure->FigureType;
+				}
+
 
 				//удалить тестовое поле
 				delete testedField;

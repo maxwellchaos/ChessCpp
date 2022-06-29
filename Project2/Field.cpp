@@ -232,12 +232,14 @@ bool Field::Move(int i, int j,bool withoutCheckmate)
 			{
 				//Влево
 				Figures[i][3] = Figures[i][0];
+				Figures[i][3]->j = 3;
 				Figures[i][0] = nullptr;
 			}
 			else
 			{
 				//Вправо
 				Figures[i][5] = Figures[i][7];
+				Figures[i][5]->j = 5;
 				Figures[i][7] = nullptr;
 
 			}
@@ -310,6 +312,7 @@ void Field::GetAllAttackMap(int Color)
 {
 	//очистить все ходы
 	ClearMovesMap();
+
 	//перебрать все фигуры
 	for (int i = 0; i < 8; i++)
 	{
@@ -547,7 +550,7 @@ bool Field::CheckAllMovesFigure(Figure* figure,int color)
 	return true;
 }
 
-
+//Подсчитать позицию заданного цвета на доске
 int Field::CalcPosition(int color)
 {
 

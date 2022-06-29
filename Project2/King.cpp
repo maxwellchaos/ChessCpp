@@ -81,7 +81,7 @@ void King::FillMovesMap(int i, int j)
 void King::FillMovesMapWithClear(int i, int j)
 {
     //Получить карту всех ходов всех фигур противоположного цвета
-    _field->GetAllAttackMap(  Figure::InverseColor(FigureColor));
+    _field->GetAllAttackMap(Figure::InverseColor(FigureColor));
 
     //булев массив возможных ходов 
     //Нужен чтобы сохранить возможные ходы, вычисленные ранее
